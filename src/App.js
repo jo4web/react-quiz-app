@@ -1,8 +1,14 @@
 import React from "react"
+import Questions from "./Components/Questions"
 
 export default function App() {
   
   return (
-        <div>Teste</div>
+        <main>
+            <div>
+              Teste
+              </div>
+              <Questions />
+            </main>
   )
 } 
