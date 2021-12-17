@@ -7,6 +7,11 @@ export default function App() {
 
 const [data, setData] = React.useState([])
 
+function findNanoId(id) {
+  console.log(id)
+  
+}
+
 React.useEffect( () => {
   fetch("https://opentdb.com/api.php?amount=5&type=multiple")
   .then(res => res.json())
@@ -27,7 +32,7 @@ React.useEffect( () => {
           answers: updateArr
         }
       })
-      console.log(newArr, "teste")
+
       setData(newArr)
     }
     )
@@ -35,7 +40,7 @@ React.useEffect( () => {
 
   return (
         <main>
-              <Questions data={data}/>
+              <Questions data={data} findNanoId={findNanoId} />
             </main>
   )
 } 
