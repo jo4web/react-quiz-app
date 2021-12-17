@@ -6,17 +6,44 @@ export default function App() {
 
 const [data, setData] = React.useState([])
 
+// [{choose: Tadashi, isHeld: false, Id: nanoId}]
+
 React.useEffect( () => {
   fetch("https://opentdb.com/api.php?amount=5&type=multiple")
   .then(res => res.json())
     .then(data => {
       const newData = JSON.parse(JSON.stringify(data.results))
-      setData(newData)
+      const newArr = newData.map(data => {
+        data.answers = [...data.incorrect_answers, data.correct_answer]
+
+        const updateArr = data.answers.map(answers => {
+          return {
+            select: answers,
+            isHeld: false,
+            nanoId: "whatever"
+          }
+        })
+
+        return {
+          ...data,
+          answers: updateArr
+        }
+      })
+      console.log(newArr, "teste")
+/*       const newMap = newArr.map((arr => {
+        return arr.answers.map((answers => {
+          return {
+            select: answers,
+            isHeld: false,
+            nanoId: 1112233
+          }
+        }))
+      })) */
+      setData(newArr)
     }
     )
 }, [])
 
-  
   return (
         <main>
               <Questions data={data}/>
