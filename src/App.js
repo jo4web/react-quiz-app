@@ -8,8 +8,28 @@ export default function App() {
 const [data, setData] = React.useState([])
 
 function findNanoId(id) {
-  console.log(id)
-  
+
+  const refreshArr = data.map((data) => {
+    
+    const answersArr = data.answers.map((answers) => {
+      if (id === answers.nanoId) {
+        return {
+          ...answers,
+          isHeld: !answers.isHeld
+        }
+      } else {
+        return answers
+      }
+
+    })
+
+    return {
+      ...data,
+      answers: answersArr
+    }
+})  
+setData(refreshArr)
+
 }
 
 React.useEffect( () => {
