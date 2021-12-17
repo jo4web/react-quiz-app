@@ -1,12 +1,11 @@
 import React from "react"
 import Questions from "./Components/Questions"
 import "./App.css"
+import { nanoid } from 'nanoid'
 
 export default function App() {
 
 const [data, setData] = React.useState([])
-
-// [{choose: Tadashi, isHeld: false, Id: nanoId}]
 
 React.useEffect( () => {
   fetch("https://opentdb.com/api.php?amount=5&type=multiple")
@@ -20,25 +19,15 @@ React.useEffect( () => {
           return {
             select: answers,
             isHeld: false,
-            nanoId: "whatever"
+            nanoId: nanoid()
           }
         })
-
         return {
           ...data,
           answers: updateArr
         }
       })
       console.log(newArr, "teste")
-/*       const newMap = newArr.map((arr => {
-        return arr.answers.map((answers => {
-          return {
-            select: answers,
-            isHeld: false,
-            nanoId: 1112233
-          }
-        }))
-      })) */
       setData(newArr)
     }
     )
