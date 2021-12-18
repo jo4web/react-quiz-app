@@ -13,7 +13,8 @@ export default function Questions({ data, findNanoId}) {
                         <div className="answers">
                             {elements.answers.map(answers => {
                                 const style = {
-                                    backgroundColor: answers.isHeld ? "blue" : ""
+                                    backgroundColor: answers.isHeld ? "#D6DBF5" : "",
+                                    border: answers.isHeld ? "none" : ""
                                 }
                                 
                                 return (
