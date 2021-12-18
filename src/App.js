@@ -7,12 +7,6 @@ export default function App() {
 
 const [data, setData] = React.useState([])
 
-/* 
-quando clicar mude o background
-se ja existe um background true, fazer ele false
-
-*/
-
 function findNanoId(id) {
 
   const refreshArr = data.map((data) => {
