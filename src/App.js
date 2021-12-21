@@ -6,34 +6,38 @@ import { nanoid } from 'nanoid'
 export default function App() {
 
 const [data, setData] = React.useState([])
+const [count, setCount] = React.useState(0)
 
 function findNanoId(id) {
-
-  const refreshArr = data.map((data) => {
-    
+   const refreshArr = data.map((data) => {
     const answersArr = data.answers.map((answers) => {
       if (id === answers.nanoId) {
+        if (answers.select === data.correct_answer) {
+          setCount(count + 1)
+          if (answers.isHeld) {
+            setCount(count - 1)
+          }
+        }
         return {
           ...answers,
           isHeld: !answers.isHeld
         }
       } else {
         return {
-          ...answers,
-          isHeld: false
+          ...answers
         }
       }
-
     })
-
     return {
       ...data,
       answers: answersArr
     }
-})  
-setData(refreshArr)
+})
+
+    setData(refreshArr)
 
 }
+
 
 React.useEffect( () => {
   fetch("https://opentdb.com/api.php?amount=5&type=multiple")
@@ -64,6 +68,7 @@ React.useEffect( () => {
   return (
         <main>
               <Questions data={data} findNanoId={findNanoId} />
+              <button>Check answers {count}</button>
             </main>
   )
 } 
