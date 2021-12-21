@@ -68,7 +68,7 @@ React.useEffect( () => {
   return (
         <main>
               <Questions data={data} findNanoId={findNanoId} />
-              <button className="check-button">Check answers {count}</button>
+              <button className="check-button">Check answers</button>
             </main>
   )
 } 
