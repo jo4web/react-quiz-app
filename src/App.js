@@ -5,12 +5,13 @@ import { nanoid } from 'nanoid'
 
 export default function App() {
 
-const [data, setData] = React.useState([])
+const [data, setData] = React.useState(JSON.parse(localStorage.getItem('localData')) || [])
 const [count, setCount] = React.useState(0)
 const [check, setCheck] = React.useState(false)
 const [resetData, setResetData] = React.useState(0)
 
 function playAgain() {
+  localStorage.removeItem('localData')
   setResetData(resetData + 1)
   setCount(0)
   setCheck(false)
@@ -58,6 +59,7 @@ function findNanoId(id) {
 })
 
     setData(refreshArr)
+    localStorage.setItem('localData', JSON.stringify(refreshArr))
 
 }
 
@@ -81,8 +83,10 @@ function findNanoId(id) {
             answers: updateArr
           }
         })
-  
-        setData(newArr)
+        if (localStorage.getItem('localData') === null) {
+          setData(newArr)
+        }
+
       }
       )
   }, [resetData])
