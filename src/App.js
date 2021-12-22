@@ -8,6 +8,13 @@ export default function App() {
 const [data, setData] = React.useState([])
 const [count, setCount] = React.useState(0)
 const [check, setCheck] = React.useState(false)
+const [resetData, setResetData] = React.useState(0)
+
+function playAgain() {
+  setResetData(resetData + 1)
+  setCount(0)
+  setCheck(false)
+}
 
 function checkAnswers() {
   setData(prevData => prevData.map(data => {
@@ -54,39 +61,39 @@ function findNanoId(id) {
 
 }
 
-
-React.useEffect( () => {
-  fetch("https://opentdb.com/api.php?amount=5&type=multiple")
-  .then(res => res.json())
-    .then(data => {
-      const newData = JSON.parse(JSON.stringify(data.results))
-      const newArr = newData.map(data => {
-        data.answers = [...data.incorrect_answers, data.correct_answer]
-
-        const updateArr = data.answers.map(answers => {
+  React.useEffect( () => {
+    fetch("https://opentdb.com/api.php?amount=5&type=multiple")
+    .then(res => res.json())
+      .then(data => {
+        const newData = JSON.parse(JSON.stringify(data.results))
+        const newArr = newData.map(data => {
+          data.answers = [...data.incorrect_answers, data.correct_answer]
+  
+          const updateArr = data.answers.map(answers => {
+            return {
+              select: answers,
+              isHeld: false,
+              nanoId: nanoid()
+            }
+          })
           return {
-            select: answers,
-            isHeld: false,
-            nanoId: nanoid()
+            ...data,
+            answers: updateArr
           }
         })
-        return {
-          ...data,
-          answers: updateArr
-        }
-      })
+  
+        setData(newArr)
+      }
+      )
+  }, [resetData])
 
-      setData(newArr)
-    }
-    )
-}, [])
 
   return (
         <main>
               <Questions data={data} findNanoId={findNanoId} />
               <div className="footer">
                 {check && <h3>You scored {count}/5 correct answers</h3>}
-                <button onClick={checkAnswers} className="check-button">{check ? "Play Again" : "Check answers"}</button>
+                <button onClick={check ? playAgain : checkAnswers} className="check-button">{check ? "Play Again" : "Check answers"}</button>
               </div>
             </main>
   )
