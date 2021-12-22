@@ -7,11 +7,13 @@ export default function App() {
 
 const [data, setData] = React.useState([])
 const [count, setCount] = React.useState(0)
+const [check, setCheck] = React.useState(false)
 
 function checkAnswers() {
   setData(prevData => prevData.map(data => {
     const newArr = data.answers.map(answers => {
-      return answers.select === data.correct_answer ? {...answers, isCorrect: true} : {...answers, isCorrect: false}
+      return answers.select === data.correct_answer ? 
+        {...answers, isCorrect: true} : {...answers, isCorrect: false}
 
     })
     return {
@@ -19,6 +21,7 @@ function checkAnswers() {
           answers: newArr
     }
   }))
+  setCheck(true)
 }
 
 function findNanoId(id) {
@@ -81,7 +84,10 @@ React.useEffect( () => {
   return (
         <main>
               <Questions data={data} findNanoId={findNanoId} />
-              <button onClick={checkAnswers} className="check-button">Check answers</button>
+              <div className="footer">
+                {check && <h3>You scored {count}/5 correct answers</h3>}
+                <button onClick={checkAnswers} className="check-button">{check ? "Play Again" : "Check answers"}</button>
+              </div>
             </main>
   )
 } 
