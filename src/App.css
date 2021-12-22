@@ -15,12 +15,13 @@ main {
     display: flex;
     flex-direction: column;
     margin: 0;
-    padding: 30px;
+    padding: 4em;
     max-width: 800px;
     background: #F5F7FB;
     background-image: url("./background1.png"), url("./background2.png");
     background-repeat: no-repeat, no-repeat;
     background-position: 100% 0%, 0% 100%;
+    background-size: 25%, 15%;
 }
 
 .check-button {

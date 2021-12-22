@@ -8,6 +8,19 @@ export default function App() {
 const [data, setData] = React.useState([])
 const [count, setCount] = React.useState(0)
 
+function checkAnswers() {
+  setData(prevData => prevData.map(data => {
+    const newArr = data.answers.map(answers => {
+      return answers.select === data.correct_answer ? {...answers, isCorrect: true} : {...answers, isCorrect: false}
+
+    })
+    return {
+          ...data,
+          answers: newArr
+    }
+  }))
+}
+
 function findNanoId(id) {
    const refreshArr = data.map((data) => {
     const answersArr = data.answers.map((answers) => {
@@ -68,7 +81,7 @@ React.useEffect( () => {
   return (
         <main>
               <Questions data={data} findNanoId={findNanoId} />
-              <button className="check-button">Check answers</button>
+              <button onClick={checkAnswers} className="check-button">Check answers</button>
             </main>
   )
 } 
