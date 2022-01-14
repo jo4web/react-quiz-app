@@ -2,6 +2,7 @@ import React from "react"
 import Questions from "./Components/Questions"
 import "./App.css"
 import { nanoid } from 'nanoid'
+import he from 'he'
 
 export default function App() {
 
@@ -11,11 +12,33 @@ const [data, setData] = React.useState(JSON.parse(localStorage.getItem('localDat
 const [count, setCount] = React.useState(0)
 const [check, setCheck] = React.useState(false)
 
+function decodeHtml (data) {
+  const decodedArr = data.map(data => {
+    const answersArr = data.answers.map(answers => {
+      const updateAnswers = he.decode(answers.select)
+      
+      return {
+        ...answers,
+        select: updateAnswers
+      }
+    })
+    const questionData = he.decode(data.question)
+
+    return {
+      ...data,
+      question: questionData,
+      answers: answersArr
+    }
+  })
+  return decodedArr;
+}
+
 React.useEffect( () => {
   fetch("https://opentdb.com/api.php?amount=5&type=multiple")
   .then(res => res.json())
     .then(data => {
-      const newData = JSON.parse(JSON.stringify(data.results))
+      const newData = data.results
+
       const newArr = newData.map(data => {
         data.answers = [...data.incorrect_answers, data.correct_answer]
         data.answers = data.answers.sort(() => Math.random() - 0.5)
@@ -32,7 +55,9 @@ React.useEffect( () => {
           answers: updateArr
         }
       })
-      setFetchData(newArr)
+      const dataDecoded = decodeHtml(newArr)
+
+      setFetchData(dataDecoded)
     }
     )
 }, [resetData])
