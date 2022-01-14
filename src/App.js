@@ -18,6 +18,7 @@ React.useEffect( () => {
       const newData = JSON.parse(JSON.stringify(data.results))
       const newArr = newData.map(data => {
         data.answers = [...data.incorrect_answers, data.correct_answer]
+        data.answers = data.answers.sort(() => Math.random() - 0.5)
 
         const updateArr = data.answers.map(answers => {
           return {
@@ -84,7 +85,8 @@ function findNanoId(id, index) {
             ...answers,
             isHeld: false
           }
-      }})
+      }
+    })
       return {
         ...data,
         answers: answerArr
