@@ -7,6 +7,9 @@ export default function App() {
 
 const [fetchData, setFetchData] = React.useState([])
 const [resetData, setResetData] = React.useState(0)
+const [data, setData] = React.useState(JSON.parse(localStorage.getItem('localData')) || [])
+const [count, setCount] = React.useState(0)
+const [check, setCheck] = React.useState(false)
 
 React.useEffect( () => {
   fetch("https://opentdb.com/api.php?amount=5&type=multiple")
@@ -33,9 +36,6 @@ React.useEffect( () => {
     )
 }, [resetData])
 
-const [data, setData] = React.useState(JSON.parse(localStorage.getItem('localData')) || [])
-const [count, setCount] = React.useState(0)
-const [check, setCheck] = React.useState(false)
 
 function startQuiz() {
   setData(fetchData)
@@ -64,34 +64,37 @@ function checkAnswers() {
   setCheck(true)
 }
 
-function findNanoId(id) {
-   const refreshArr = data.map((data) => {
-    const answersArr = data.answers.map((answers) => {
-      if (id === answers.nanoId) {
-        if (answers.select === data.correct_answer) {
-          setCount(count + 1)
-          if (answers.isHeld) {
-            setCount(count - 1)
+function findNanoId(id, index) {
+  setData(prevData => prevData.map((data, currentIndex) => {
+    if (index === currentIndex) {
+      const answerArr = data.answers.map(answers => {
+        if (id === answers.nanoId) {
+          if (answers.select === data.correct_answer) {
+            setCount(count + 1)
+            if (answers.isHeld) {
+              setCount(count - 1)
+            }
           }
-        }
-        return {
-          ...answers,
-          isHeld: !answers.isHeld
-        }
-      } else {
-        return {
-          ...answers
-        }
+          return {
+            ...answers,
+            isHeld: !answers.isHeld
+          }
+        } else {
+          return {
+            ...answers,
+            isHeld: false
+          }
+      }})
+      return {
+        ...data,
+        answers: answerArr
       }
-    })
-    return {
-      ...data,
-      answers: answersArr
+    } else {
+      return data
     }
-})
+  }))
 
-    setData(refreshArr)
-    localStorage.setItem('localData', JSON.stringify(refreshArr))
+  localStorage.setItem('localData', JSON.stringify(data))
 
 }
 
@@ -116,7 +119,4 @@ return data.length <= 0 ?
                 </div>
               </main>
               )
-  
-
-  
 } 
