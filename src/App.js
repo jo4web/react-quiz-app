@@ -88,6 +88,7 @@ function checkAnswers() {
     }
   }))
   setCheck(true)
+  localStorage.setItem('localData', JSON.stringify(data))
 }
 
 function findNanoId(id, index) {
@@ -121,10 +122,9 @@ function findNanoId(id, index) {
     }
   }))
 
-  localStorage.setItem('localData', JSON.stringify(data))
-
 }
 
+localStorage.setItem('localData', JSON.stringify(data))
 
 return data.length <= 0 ? 
       (
