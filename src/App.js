@@ -7,7 +7,6 @@ import he from 'he'
 export default function App() {
 
 const [fetchData, setFetchData] = React.useState([])
-const [resetData, setResetData] = React.useState(0)
 const [data, setData] = React.useState(JSON.parse(localStorage.getItem('localData')) || [])
 const [count, setCount] = React.useState(0)
 const [check, setCheck] = React.useState(false)
@@ -60,7 +59,7 @@ React.useEffect( () => {
       setFetchData(dataDecoded)
     }
     )
-}, [resetData])
+}, [data])
 
 
 function startQuiz() {
@@ -69,7 +68,6 @@ function startQuiz() {
 
 function playAgain() {
   localStorage.removeItem('localData')
-  setResetData(resetData + 1)
   setData(fetchData)
   setCount(0)
   setCheck(false)
